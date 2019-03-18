@@ -17,7 +17,7 @@ public class HttpsView: SKView {
 
   var message = ""
 
-  public init(frame: CGRect, message: String) {
+  public init(frame: CGRect, message: EncrytableMessage) {
     let gameScene = GameScene(size: frame.size, message: message)
     gameScene.scaleMode = .aspectFill
     super.init(frame: frame)

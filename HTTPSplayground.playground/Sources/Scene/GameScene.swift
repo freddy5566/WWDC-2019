@@ -15,7 +15,7 @@ class GameScene: SKScene {
 
   // MARK: - Properties
 
-  var message = ""
+  var message = EncrytableMessage(message: "")
 
   lazy var resendButton: SKLabelNode = {
     let resendButton = SKLabelNode(text: "hit me to see\nwhat charile will recieve")
@@ -43,7 +43,7 @@ class GameScene: SKScene {
 
   private lazy var jamfly: CharacterSprite = {
     let jamfly = CharacterSprite(characterName: "jamfly",
-                                 message: message,
+                                 message: message.messageString,
                                  waiting: "🙋‍♂️",
                                  sending: "🙎‍♂️",
                                  recieve: "🙆‍♂️")
@@ -93,7 +93,7 @@ class GameScene: SKScene {
 
   // MARK: - Initialization
 
-  init(size: CGSize, message: String) {
+  init(size: CGSize, message: EncrytableMessage) {
     self.message = message
     super.init(size: size)
   }

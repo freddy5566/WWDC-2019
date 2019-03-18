@@ -14,7 +14,7 @@ class SceneRecieveState: SceneState {
   override func didEnter(from previousState: GKState?) {
     super.didEnter(from: previousState)
     characterB.stateMachine.enter(CharacterRecieveState.self)
-    characterB.message = scene.message
+    characterB.message = scene.message.messageString
   }
   
 }

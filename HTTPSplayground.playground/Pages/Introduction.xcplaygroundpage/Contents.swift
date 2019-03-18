@@ -28,23 +28,23 @@ import CoreML
  */
 
 //: Let's say something to charile
-let message = "big brother is really bad"
-
+let message = EncrytableMessage(message: "big brother is really bad.")
 
 //: Let's see what happened to the message that jamfly send to charile.
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
-let view = HttpsView(frame: frame, message: message)
+var view = HttpsView(frame: frame, message: message)
 PlaygroundPage.current.liveView = view
+
 //: It seems to be weird, charile recieve the wrong message
 
 //: # Big brother is watching it.
 //: ---
-//: ***Who controls the past controls the future. Who controls the present controls the past.***
+//: ***Who controls the past controls the future. Who controls the present controls the past. ― George Orwell, 1984***
 
-//: Big brother dont like people say something bad about him.
+//: Big brother doesn't like people say something bad about him.
 let sayHellooBigBrother = "big brother hello"
 let saySomthingBadToBigBrother = "big brother is bad"
-//: Let's see how big brother predict the sentence
+//: Let's see how big brother predicts the sentence
 ClassificationManager.shared.predictSentiment(from: sayHellooBigBrother)
 ClassificationManager.shared.predictSentiment(from: saySomthingBadToBigBrother)
 
@@ -54,21 +54,4 @@ ClassificationManager.shared.predictSentiment(from: saySomthingBadToBigBrother)
 //: But it is how `http` works.
 //: It gives **big brother** chance to read/write the message.
 
-/*:
-
- # Chapter two -- Secret code
-
- jamfly decide to encode the message that only charile know how to decrypt it.
-
- The rule is shifting each letter by 1 position.
- Say, hello world -> ifmmp xpsme
-
- We call it symmetric key cryptography, and the above method is known as the **Caesar cipher**
-
- Then, here is a question, what if jamfly and charile never meet before, they dont even know the encrypt algorithm and key.
-
- jamfly need to send a message to charile, tell him what's the algorithm and key.
- but it will very easy to leak.
-
- */
-
+//: [Next](@next)
