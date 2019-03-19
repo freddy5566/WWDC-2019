@@ -17,5 +17,6 @@ public struct PhysicsCategory {
   static let jamfly: UInt32       = 1 << 1
   static let charile: UInt32      = 1 << 2
   static let bigBrother: UInt32   = 1 << 3
+  static let tim: UInt32          = 1 << 4
   
 }

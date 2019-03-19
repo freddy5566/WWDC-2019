@@ -75,8 +75,6 @@ public final class ClassificationManager {
         return true
       }
 
-      print("token is \(token)")
-
       if let value = wordCounts[token] {
         wordCounts[token] = value + 1.0
       } else {
@@ -86,7 +84,6 @@ public final class ClassificationManager {
     }
 
     isBigBrother = isAboutBigBrother(text: tokens)
-    print(tokens)
     return wordCounts
   }
 }

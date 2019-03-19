@@ -15,11 +15,11 @@ class SceneState: GKState {
   
   let characterA: CharacterSprite
   let characterB: CharacterSprite
-  let scene: GameScene
+  let scene: IntroductionScene
 
   init(characterA: CharacterSprite,
        characterB: CharacterSprite,
-       scene: GameScene) {
+       scene: IntroductionScene) {
     self.characterA = characterA
     self.characterB = characterB
     self.scene = scene

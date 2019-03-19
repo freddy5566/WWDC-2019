@@ -46,7 +46,7 @@ let jamflyCaesarMessage = EncrytableMessage(message: "big brother is geek",
 //: He also want to control the future
 
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
-let jamflyCaesarView = HttpsView(frame: frame, message: jamflyCaesarMessage)
+let jamflyCaesarView = HttpView(frame: frame, message: jamflyCaesarMessage)
 PlaygroundPage.current.liveView = jamflyCaesarView
 
 //: [Next](@next)

@@ -1,5 +1,5 @@
 //
-//  GameScene.swift
+//  IntroductionScene.swift
 //  WWDC 2019
 //
 //  Created by jamfly on 15/03/2019.
@@ -11,7 +11,7 @@ import SpriteKit
 import GameplayKit
 import UIKit
 
-class GameScene: SKScene {
+class IntroductionScene: SKScene {
 
   // MARK: - Properties
 
@@ -141,7 +141,6 @@ class GameScene: SKScene {
         }
 
         if node.name == "resendButton" {
-          print("button pressed")
           bigBrotherFly()
         }
 
@@ -199,7 +198,7 @@ class GameScene: SKScene {
 
 // MARK: - SKPhysicsContactDelegate
 
-extension GameScene: SKPhysicsContactDelegate {
+extension IntroductionScene: SKPhysicsContactDelegate {
   
   private func worldPhysicsBody(frame:CGRect) -> SKPhysicsBody {
     let body = SKPhysicsBody(edgeLoopFrom: frame)
@@ -217,16 +216,12 @@ extension GameScene: SKPhysicsContactDelegate {
     let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
     if collision == PhysicsCategory.pigeon | PhysicsCategory.bigBrother {
-      print("big brother found it")
       pigeon.removeAllActions()
       pigeon.isPaused = true
       pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charile
       sceneStateMachine.enter(SceneFoundState.self)
     } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charile {
       pigeon.isPaused = true
-      pigeon.removeAllActions()
-      print("charile hit")
-      print(sceneStateMachine.enter(SceneRecieveState.self))
     }
   }
 

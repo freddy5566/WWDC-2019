@@ -32,7 +32,7 @@ let message = EncrytableMessage(message: "big brother is really bad.")
 
 //: Let's see what happened to the message that jamfly send to charile.
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
-var view = HttpsView(frame: frame, message: message)
+var view = HttpView(frame: frame, message: message)
 PlaygroundPage.current.liveView = view
 
 //: It seems to be weird, charile recieve the wrong message
