@@ -46,7 +46,7 @@ final class PigeonSprite: SKSpriteNode {
     fatalError("")
   }
 
-  // MARK: - Public methods
+  // MARK: - Public Methods
 
   func signed() {
     cage.texture = SKTexture(imageNamed: "wwdc-2019.jpg")
@@ -57,20 +57,20 @@ final class PigeonSprite: SKSpriteNode {
                             y: frame.minY)
     print("cage frame \(frame)")
     cage.run(SKAction.rotate(byAngle: 2 * CGFloat.pi,
-                             duration: 5))
+                             duration: 3))
   }
 
   func wwdcResize() {
     cage.run(SKAction.resize(byWidth: frame.width,
                              height: frame.height,
-                             duration: 5),
+                             duration: 3),
              completion: {
               NotificationCenter.default.post(name: Notification.Name.FINISH_SCENE,
                                               object: nil)
     })
   }
 
-  // MARK: - Private methods
+  // MARK: - Private Methods
 
   private func setUp() {
     pigeon.position = CGPoint(x: 0, y: 50)

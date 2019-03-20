@@ -19,9 +19,9 @@ class CharacterAnimationView: UIView {
     fatalError("")
   }
 
-  // MARK: - Public method
+  // MARK: - Public Methods
 
-  func setUp() {
+  func drawText() {
     for layer in self.charLayers {
       layer.removeFromSuperlayer()
     }
@@ -58,7 +58,7 @@ class CharacterAnimationView: UIView {
     }
   }
 
-  // MARK: - Private method
+  // MARK: - Private Methods
 
   private func characterPaths(attributedString: NSAttributedString,
                               position: CGPoint) -> [CGPath] {

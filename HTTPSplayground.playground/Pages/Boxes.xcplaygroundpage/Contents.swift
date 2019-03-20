@@ -49,9 +49,17 @@ import UIKit
  */
 
 //: Now let's see how this works
+//: Move the pigeon to get tim's signature.
+//:
+//: And get to deliver message from jamfly to charile
+
 let message = EncrytableMessage(message: "hello WWDC 2019",
                                 encrytableProtocol: .caesar(key: 8))
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
 let view = HttpsView(frame: frame,
                      message: message)
 PlaygroundPage.current.liveView = view
+
+//: Thanks for read it.
+//:
+//: Hop you guys like it and can get something from this playground.

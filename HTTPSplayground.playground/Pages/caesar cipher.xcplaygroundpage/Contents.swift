@@ -21,9 +21,11 @@ import UIKit
  but it means that big brother can read it also.
 
  */
-//: Befor we start Let's see the result of caesar cipher
 
+//: Befor we start it. Let's see the result of caesar cipher
+//:
 //: Now enter the message, shifted key
+
 let messageYouWantToEncode = "Carry on,carry on,as if nothing really matters-"
 let shiftedKey = 1
 
@@ -42,8 +44,10 @@ let jamflyCaesarMessage = EncrytableMessage(message: "big brother is geek",
                                             encrytableProtocol: .caesar(key: 1))
 
 //: Let's see what happened to the message that jamfly send to charile.
+//:
 //: Dont forget that big brother doesn't like people say somthing bad about him.
-//: He also want to control the future
+//:
+//: And never forget ***Who controls the past controls the future. Who controls the present controls the past.***
 
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
 let jamflyCaesarView = HttpView(frame: frame, message: jamflyCaesarMessage)

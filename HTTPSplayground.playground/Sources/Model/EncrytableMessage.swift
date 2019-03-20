@@ -35,7 +35,7 @@ public struct EncrytableMessage {
     }
   }
 
-  // MARK: - Public methods
+  // MARK: - Public Methods
 
   public func caesarEncode() -> String {
     return caesarCipher(messageString, shiftBy: key)
@@ -45,7 +45,7 @@ public struct EncrytableMessage {
     return caesarCipher(messageString, shiftBy: -key)
   }
 
-  // MARK: - Private methods
+  // MARK: - Private Methods
 
   private func caesarCipher(_ input: String, shiftBy: Int) -> String {
     let letterA = Int("a".utf16.first!)

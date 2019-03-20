@@ -40,7 +40,7 @@ public class HttpsView: SKView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Private methods
+  // MARK: - Private Methods
 
   private func setUpNotification() {
     NotificationCenter.default.addObserver(self,
@@ -62,7 +62,7 @@ public class HttpsView: SKView {
                                            frame: textFrame)
     helloWWDC.center.x -= 20
     addSubview(helloWWDC)
-    helloWWDC.setUp()
+    helloWWDC.drawText()
 
     textAnimation(with: helloWWDC)
   }
@@ -82,7 +82,7 @@ public class HttpsView: SKView {
 
   private func jamflyAnimation(with jamfly: CharacterAnimationView) {
     addSubview(jamfly)
-    jamfly.setUp()
+    jamfly.drawText()
 
     let slogan = CharacterAnimationView(text: "Write code. Blow minds",
                                         frame: textFrame)
@@ -101,7 +101,7 @@ public class HttpsView: SKView {
     slogan.center.y += 105
     slogan.center.x -= 177
     UIView.animate(withDuration: 3) {
-      slogan.setUp()
+      slogan.drawText()
       slogan.alpha = 1
     }
   }

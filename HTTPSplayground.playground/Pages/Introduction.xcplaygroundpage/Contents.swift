@@ -30,28 +30,37 @@ import CoreML
 //: Let's say something to charile
 let message = EncrytableMessage(message: "big brother is really bad.")
 
+//: Move pigeon to deliver message to charile.
+//:
 //: Let's see what happened to the message that jamfly send to charile.
+//:
+//: But be careful the big brother's TV, there's nothing can escape from it.
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
 var view = HttpView(frame: frame, message: message)
 PlaygroundPage.current.liveView = view
 
-//: It seems to be weird, charile recieve the wrong message
+//: It seems to be weird, charile recieve the wrong message.
 
 //: # Big brother is watching it.
-//: ---
+//:
 //: ***Who controls the past controls the future. Who controls the present controls the past. ― George Orwell, 1984***
-
+//:
 //: Big brother doesn't like people say something bad about him.
 let sayHellooBigBrother = "big brother hello"
 let saySomthingBadToBigBrother = "big brother is bad"
+
 //: Let's see how big brother predicts the sentence
 ClassificationManager.shared.predictSentiment(from: sayHellooBigBrother)
 ClassificationManager.shared.predictSentiment(from: saySomthingBadToBigBrother)
 
 //: Big brother will detect the message if it's `negative`
-//: Then it's time to control the future
-//: It's really scary that message was changed, or even was seen.
+//:
+//: Then it's time to control the future.
+//:
+//: It's really scary that message was changed, or even was seen directly.
+//:
 //: But it is how `http` works.
-//: It gives **big brother** chance to read/write the message.
+//:
+//: It gives not only **big brother** but everyone the chance to *read*/*rewrite* the message.
 
 //: [Next](@next)

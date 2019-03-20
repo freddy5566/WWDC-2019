@@ -27,7 +27,7 @@ class IntroductionScene: SKScene {
     return resendButton
   }()
 
-  private var bigBrotherCurrentNode: SKNode?
+  private var pigeonCurrentNode: SKNode?
 
   private lazy var pigeon: SKSpriteNode = {
     let pigeon = SKSpriteNode(imageNamed: "pigeon_right")
@@ -67,8 +67,8 @@ class IntroductionScene: SKScene {
   }()
 
   private let bigBrother: SKLabelNode = {
-    let bigBrother = SKLabelNode(text: "🎩")
-    bigBrother.name = "big brother"
+    let bigBrother = SKLabelNode(text: "🖥")
+    bigBrother.name = "big brother's TV"
     bigBrother.physicsBody = SKPhysicsBody(rectangleOf: bigBrother.frame.size)
     bigBrother.physicsBody?.categoryBitMask = PhysicsCategory.bigBrother
     bigBrother.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
@@ -117,8 +117,10 @@ class IntroductionScene: SKScene {
                                y: jamfly.position.y)
     pigeon.position = CGPoint(x: jamfly.position.x,
                               y: jamfly.position.y + 50)
-    bigBrother.position = CGPoint(x: size.width / 2, y: 100)
-    resendButton.position = CGPoint(x: size.width * 0.75, y: 550.0)
+    bigBrother.position = CGPoint(x: frame.midX,
+                                  y: frame.height - 50)
+    resendButton.position = CGPoint(x: size.width * 0.75,
+                                    y: 550.0)
 
     addChild(pigeon)
     addChild(jamfly)
@@ -126,7 +128,6 @@ class IntroductionScene: SKScene {
     addChild(bigBrother)
     addChild(resendButton)
     resendButton.isHidden = true
-    moveRight()
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -136,8 +137,8 @@ class IntroductionScene: SKScene {
 
       let touchedNodes = self.nodes(at: location)
       for node in touchedNodes.reversed() {
-        if node.name == "big brother" {
-          self.bigBrotherCurrentNode = node
+        if node.name == "pigeon" {
+          pigeonCurrentNode = node
         }
 
         if node.name == "resendButton" {
@@ -150,49 +151,62 @@ class IntroductionScene: SKScene {
   }
 
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if let touch = touches.first, let node = bigBrotherCurrentNode {
+    if let touch = touches.first, let node = pigeonCurrentNode {
       let touchLocation = touch.location(in: self)
-
       node.position = touchLocation
+      if Int(node.position.x) == Int(bigBrother.position.x) {
+        bigBrotherFound()
+      }
     }
   }
 
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    self.bigBrotherCurrentNode = nil
+    pigeonCurrentNode = nil
   }
 
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    self.bigBrotherCurrentNode = nil
+    pigeonCurrentNode = nil
   }
 
   // MARK: - Public Methods
+
+  func bigBrotherDismiss() {
+    bigBrother.removeAllActions()
+    bigBrother.removeFromParent()
+  }
 
   // MARK: - Private Methods
 
   private func bigBrotherFly() {
     sceneStateMachine.enter(SceneResendingState.self)
     pigeon.isPaused = false
-    resend()
   }
 
-  private func moveRight() {
-    let path = UIBezierPath()
-    path.move(to: CGPoint.zero)
-    let mid = (charile.position.x - jamfly.position.x) / 2
-    path.addQuadCurve(to: CGPoint(x: charile.position.x,
-                                  y: charile.position.y),
-                      controlPoint:  CGPoint(x: mid,
-                                             y: charile.position.y + 20))
-    let quadCurve = SKAction.follow(path.cgPath, speed: 100)
-    pigeon.run(quadCurve)
+  private func bigBrotherFound() {
+    pigeon.removeAllActions()
+    pigeon.isPaused = true
+    pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charile
+    sceneStateMachine.enter(SceneFoundState.self)
   }
 
-  private func resend() {
-    let action = SKAction.move(to: CGPoint(x: charile.position.x,
-                                           y: charile.position.y),
-                               duration: 3)
-    pigeon.run(action)
-  }
+//  private func moveRight() {
+//    let path = UIBezierPath()
+//    path.move(to: CGPoint.zero)
+//    let mid = (charile.position.x - jamfly.position.x) / 2
+//    path.addQuadCurve(to: CGPoint(x: charile.position.x,
+//                                  y: charile.position.y),
+//                      controlPoint:  CGPoint(x: mid,
+//                                             y: charile.position.y + 20))
+//    let quadCurve = SKAction.follow(path.cgPath, speed: 100)
+//    pigeon.run(quadCurve)
+//  }
+
+//  private func resend() {
+//    let action = SKAction.move(to: CGPoint(x: charile.position.x,
+//                                           y: charile.position.y),
+//                               duration: 3)
+//    pigeon.run(action)
+//  }
 
 }
 
@@ -216,10 +230,7 @@ extension IntroductionScene: SKPhysicsContactDelegate {
     let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
     if collision == PhysicsCategory.pigeon | PhysicsCategory.bigBrother {
-      pigeon.removeAllActions()
-      pigeon.isPaused = true
-      pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charile
-      sceneStateMachine.enter(SceneFoundState.self)
+      bigBrotherFound()
     } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charile {
       pigeon.isPaused = true
     }
