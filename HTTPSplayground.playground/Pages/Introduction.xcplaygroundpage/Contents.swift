@@ -20,7 +20,7 @@ import CoreML
 
  In here pigeon represents the communication between servers, and jamfly & charile represents the sever.
 
- # Chapter One -- Naive Comunication
+ # Chapter One -- Naive Communication
 
  If jamfly wanna say something to charile, he attaches the message on the carrier pigeon's leg and send it to charile.
  charile can recieve it, everything seems to be great.
