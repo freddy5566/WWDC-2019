@@ -60,7 +60,7 @@ public class HttpsView: SKView {
   private func setUpTextAnimationView() {
     let helloWWDC = CharacterAnimationView(text: "HELLO WWDC",
                                            frame: textFrame)
-    helloWWDC.center.x -= 20
+    helloWWDC.center.x -= 35
     addSubview(helloWWDC)
     helloWWDC.drawText()
 
@@ -98,7 +98,7 @@ public class HttpsView: SKView {
   }
 
   private func sloganAnimation(with slogan: CharacterAnimationView) {
-    slogan.center.y += 105
+    slogan.center.y += 115
     slogan.center.x -= 177
     UIView.animate(withDuration: 3) {
       slogan.drawText()
