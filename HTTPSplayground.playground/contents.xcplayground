@@ -4,5 +4,6 @@
         <page name='Introduction'/>
         <page name='caesar cipher'/>
         <page name='Boxes'/>
+        <page name='Draw'/>
     </pages>
 </playground>

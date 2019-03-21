@@ -37,6 +37,7 @@ let message = EncrytableMessage(message: "big brother is really bad.")
 //: But be careful the big brother's TV, there's nothing can escape from it.
 let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
 var view = HttpView(frame: frame, message: message)
+
 PlaygroundPage.current.liveView = view
 
 //: It seems to be weird, charile recieve the wrong message.
