@@ -189,25 +189,6 @@ class IntroductionScene: SKScene {
     sceneStateMachine.enter(SceneFoundState.self)
   }
 
-//  private func moveRight() {
-//    let path = UIBezierPath()
-//    path.move(to: CGPoint.zero)
-//    let mid = (charile.position.x - jamfly.position.x) / 2
-//    path.addQuadCurve(to: CGPoint(x: charile.position.x,
-//                                  y: charile.position.y),
-//                      controlPoint:  CGPoint(x: mid,
-//                                             y: charile.position.y + 20))
-//    let quadCurve = SKAction.follow(path.cgPath, speed: 100)
-//    pigeon.run(quadCurve)
-//  }
-
-//  private func resend() {
-//    let action = SKAction.move(to: CGPoint(x: charile.position.x,
-//                                           y: charile.position.y),
-//                               duration: 3)
-//    pigeon.run(action)
-//  }
-
 }
 
 // MARK: - SKPhysicsContactDelegate
