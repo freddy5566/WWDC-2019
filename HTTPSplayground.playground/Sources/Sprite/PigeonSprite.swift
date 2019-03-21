@@ -55,9 +55,11 @@ final class PigeonSprite: SKSpriteNode {
   func wwdcRotation() {
     cage.position = CGPoint(x: frame.minX,
                             y: frame.minY)
-
-    cage.run(SKAction.rotate(byAngle: 2 * CGFloat.pi,
-                             duration: 3))
+    let fadeOut = SKAction.fadeOut(withDuration: 3)
+    let rotation = SKAction.rotate(byAngle: 2 * CGFloat.pi,
+                                   duration: 3)
+    cage.run(fadeOut)
+    cage.run(rotation)
   }
 
   func wwdcResize() {
