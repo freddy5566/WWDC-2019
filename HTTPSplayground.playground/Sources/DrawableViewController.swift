@@ -43,6 +43,8 @@ public class DrawableViewController: UIViewController {
 
   public override func viewDidLoad() {
     super.viewDidLoad()
+    preferredContentSize = CGSize(width: 750,
+                                  height: 650)
 
     view.backgroundColor = UIColor.white
 

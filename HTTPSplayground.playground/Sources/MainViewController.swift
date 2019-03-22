@@ -16,6 +16,8 @@ final public class MainViewController: DrawableViewController {
 
   // MARK: - Properties
 
+  var message = EncrytableMessage(message: "")
+
   private lazy var titleLabel: UILabel = {
     let frame = CGRect(x: 60,
                        y: 45,
@@ -65,6 +67,17 @@ final public class MainViewController: DrawableViewController {
   private var pathLayer: CALayer?
   private var predictImage: UIImage?
 
+  // MARK: - Initialization
+
+  public init(message: EncrytableMessage) {
+    self.message = message
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  public required init?(coder aDecoder: NSCoder) {
+    fatalError("")
+  }
+
   // MARK: - Life Cycle
 
   public override func viewDidLoad() {
@@ -82,7 +95,8 @@ final public class MainViewController: DrawableViewController {
 
   // MARK: - Button Actions
 
-  @objc private func clear() {
+  @objc
+  private func clear() {
     print("clear pressed")
     pathLayer?.removeFromSuperlayer()
     pathLayer = nil
@@ -94,7 +108,8 @@ final public class MainViewController: DrawableViewController {
     }
   }
 
-  @objc private func finishedPressed() {
+  @objc
+  private func finishedPressed() {
     storeImage()
     presentDraw()
   }

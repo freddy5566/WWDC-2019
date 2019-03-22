@@ -30,7 +30,7 @@ public class HttpsView: SKView {
   public init(frame: CGRect, message: EncrytableMessage) {
     let httpsScene = HttpsScene(size: frame.size,
                                 message: message)
-    httpsScene.scaleMode = .aspectFill
+    httpsScene.scaleMode = .aspectFit
     super.init(frame: frame)
     self.presentScene(httpsScene)
     setUpNotification()
@@ -49,7 +49,8 @@ public class HttpsView: SKView {
                                            object: nil)
   }
 
-  @objc private func textAnimation(notification: NSNotification) {
+  @objc
+  private func textAnimation(notification: NSNotification) {
     let backgroundView = UIView(frame: frame)
     backgroundView.backgroundColor = UIColor.wwdcBackgroundBlue
     addSubview(backgroundView)

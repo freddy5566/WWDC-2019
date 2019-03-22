@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PlaygroundSupport
 
 public class DrawingViewController: DrawableViewController {
 
@@ -92,18 +93,34 @@ public class DrawingViewController: DrawableViewController {
 
   @objc
   private func finishedPressed() {
-
+    storeImage()
+    let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
+    let message = EncrytableMessage(message: "big brother is bad.")
+    let view = HttpView(frame: frame, message: message)
+    PlaygroundPage.current.liveView = view
   }
 
   @objc
   private func selectPencile(_ sender: UIButton) {
-    print(penciles.index(of: sender))
     guard let index = penciles.index(of: sender), let pencil = Pencil(tag: index) else { return }
     color = pencil.color
     if pencil == .eraser {
       opacity = 1
     }
+  }
 
+  private func storeImage() {
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let fileName = "drawing_pigeion.jpg"
+    let fileURL = documentsDirectory.appendingPathComponent(fileName)
+    if let data = mainImageView.image!.jpegData(compressionQuality:  1.0) {
+      do {
+        try data.write(to: fileURL)
+        print("draeing pegeion saved")
+      } catch {
+        print("error saving file:", error)
+      }
+    }
   }
 
   private func setUpPenciles() {

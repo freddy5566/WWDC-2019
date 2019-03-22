@@ -19,7 +19,8 @@ public class HttpView: SKView {
 
   public init(frame: CGRect, message: EncrytableMessage) {
     let introductionScene = IntroductionScene(size: frame.size, message: message)
-    introductionScene.scaleMode = .aspectFill
+    introductionScene.scaleMode = .aspectFit
+    introductionScene.view?.clipsToBounds = true
     super.init(frame: frame)
     self.presentScene(introductionScene)
   }

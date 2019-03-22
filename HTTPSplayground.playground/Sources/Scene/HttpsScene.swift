@@ -164,7 +164,8 @@ class HttpsScene: SKScene {
 
   // MARK: - Private Methods
 
-  @objc private func removeSelf(notification: NSNotification) {
+  @objc
+  private func removeSelf(notification: NSNotification) {
     removeFromParent()
     view?.presentScene(nil)
   }

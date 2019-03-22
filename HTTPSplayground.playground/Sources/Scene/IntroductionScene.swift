@@ -37,7 +37,7 @@ class IntroductionScene: SKScene {
     let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
     if let dirPath          = paths.first
     {
-      let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("drawing.jpg")
+      let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("drawing_pigeion.jpg")
       if let image    = UIImage(contentsOfFile: imageURL.path) {
         pigeon.texture = SKTexture(image: image)
       } else {
@@ -150,7 +150,7 @@ class IntroductionScene: SKScene {
     super.touchesBegan(touches, with: event)
     if let touch = touches.first {
       let location = touch.location(in: self)
-
+      print("location is \(location)")
       let touchedNodes = self.nodes(at: location)
       for node in touchedNodes.reversed() {
         if node.name == "pigeon" {
