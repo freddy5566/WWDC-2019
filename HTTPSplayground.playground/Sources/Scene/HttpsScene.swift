@@ -49,19 +49,19 @@ class HttpsScene: SKScene {
     return jamfly
   }()
 
-  private lazy var charile: CharacterSprite = {
-    let charile = CharacterSprite(characterName: "charile",
+  private lazy var charlie: CharacterSprite = {
+    let charlie = CharacterSprite(characterName: "charlie",
                                   message: "please sign the box and send the message to me",
                                   waiting: "🙋‍♀️",
                                   sending: "🙍‍♀️",
                                   recieve: "🙆‍♀️")
-    charile.name = "charile"
-    charile.physicsBody = SKPhysicsBody(rectangleOf: charile.frame.size)
-    charile.physicsBody?.categoryBitMask = PhysicsCategory.charile
-    charile.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
-    charile.physicsBody?.collisionBitMask = 0
-    charile.physicsBody?.isDynamic = true
-    return charile
+    charlie.name = "charlie"
+    charlie.physicsBody = SKPhysicsBody(rectangleOf: charlie.frame.size)
+    charlie.physicsBody?.categoryBitMask = PhysicsCategory.charlie
+    charlie.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
+    charlie.physicsBody?.collisionBitMask = 0
+    charlie.physicsBody?.isDynamic = true
+    return charlie
   }()
 
   private lazy var tim: CharacterSprite = {
@@ -71,7 +71,7 @@ class HttpsScene: SKScene {
                                   sending: "🎅",
                                   recieve: "🎅")
     tim.name = "tim"
-    tim.physicsBody = SKPhysicsBody(rectangleOf: charile.frame.size)
+    tim.physicsBody = SKPhysicsBody(rectangleOf: charlie.frame.size)
     tim.physicsBody?.categoryBitMask = PhysicsCategory.tim
     tim.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
     tim.physicsBody?.collisionBitMask = 0
@@ -119,7 +119,7 @@ class HttpsScene: SKScene {
     
     jamfly.position = CGPoint(x: size.width * 0.2,
                               y: 50)
-    charile.position = CGPoint(x: size.width * 0.8,
+    charlie.position = CGPoint(x: size.width * 0.8,
                                y: jamfly.position.y)
     pigeon.position = CGPoint(x: jamfly.position.x,
                               y: jamfly.position.y + 100)
@@ -128,8 +128,13 @@ class HttpsScene: SKScene {
 
     addChild(pigeon)
     addChild(jamfly)
-    addChild(charile)
+    addChild(charlie)
     addChild(tim)
+
+    pigeon.run(SKAction.fadeIn(withDuration: 3))
+    jamfly.run(SKAction.fadeIn(withDuration: 3))
+    charlie.run(SKAction.fadeIn(withDuration: 3))
+    tim.run(SKAction.fadeIn(withDuration: 3))
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -173,7 +178,7 @@ class HttpsScene: SKScene {
   private func endingAnimation() {
     tim.run(SKAction.fadeOut(withDuration: 3))
     jamfly.run(SKAction.fadeOut(withDuration: 3))
-    charile.run(SKAction.fadeOut(withDuration: 3))
+    charlie.run(SKAction.fadeOut(withDuration: 3))
     pigeonFlyAway()
   }
 
@@ -220,16 +225,20 @@ extension HttpsScene: SKPhysicsContactDelegate {
       if pigeonStateMachine.currentState is PigeonNoSignState {
         pigeonStateMachine.enter(PigeonSignedState.self)
         tim.message = "I've signed the box, now pigeon can deliver message safely"
+        SpeakManager.shared.getSign()
       }
     } else if collision == PhysicsCategory.pigeon | PhysicsCategory.jamfly {
       if pigeonStateMachine.currentState is PigeonSignedState {
+        charlie.message = "I cannot wait to see message."
         jamfly.stateMachine.enter(CharacterSendingState.self)
+        SpeakManager.shared.getMessage()
       } 
-    } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charile {
+    } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charlie {
       if pigeonStateMachine.currentState is PigeonSignedState &&
         jamfly.stateMachine.currentState is CharacterSendingState {
-        charile.message = message.messageString
-        charile.stateMachine.enter(CharacterRecieveState.self)
+        SpeakManager.shared.recieveMessage()
+        charlie.message = message.messageString
+        charlie.stateMachine.enter(CharacterRecieveState.self)
         endingAnimation()
       }
     }

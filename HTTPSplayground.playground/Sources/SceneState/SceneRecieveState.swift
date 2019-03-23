@@ -15,6 +15,7 @@ class SceneRecieveState: SceneState {
     super.didEnter(from: previousState)
     characterB.stateMachine.enter(CharacterRecieveState.self)
     characterB.message = scene.message.messageString
+    SpeakManager.shared.recieveMessage()
   }
   
 }

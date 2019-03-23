@@ -16,13 +16,13 @@ import PlaygroundSupport
 
  All the activity of internet is about the servers. And here I'm going to introduce the basic concept of HTTPS via the story.
 
- In here pigeon represents the communication between servers, and jamfly & charile represents the sever.
+ In here pigeon represents the communication between servers, and jamfly & charlie represents the sever.
 
  # Chapter One -- Naive Communication
 
- If jamfly wanna say something to charile, he attaches the message on the carrier pigeon's leg and send it to charile.
+ If jamfly wanna say something to charlie, he attaches the message on the carrier pigeon's leg and send it to charlie.
 
- charile can recieve it, everything seems to be great.
+ charlie can recieve it, everything seems to be great.
 
  */
 
@@ -53,16 +53,16 @@ ClassificationManager.shared.predictSentiment(from: saySomthingBadToBigBrother)
 
  # Chapter two -- Secret code
 
- jamfly decide to encode the message that only charile know how to decrypt it.
+ jamfly decide to encode the message that only charlie know how to decrypt it.
 
  The rule is shifting each letter by 1 position.
  Say, hello world -> ifmmp xpsme
 
  We call it symmetric key cryptography, and the above method is known as the **Caesar cipher**
 
- Then, here is a question, what if jamfly and charile never meet before, they dont even know the encrypt algorithm and key.
+ Then, here is a question, what if jamfly and charlie never meet before, they dont even know the encrypt algorithm and key.
 
- jamfly need to send a message to charile, tell him what's the algorithm and key.
+ jamfly need to send a message to charlie, tell him what's the algorithm and key.
  but it means that big brother can read it also.
 
  */
@@ -87,13 +87,13 @@ let originalMessage = encodedMessage.caesarDecode()
 
  # Chapter three -- Carrying the boxes
 
- Cause jamfly and charile found out that their message often get altered,
+ Cause jamfly and charlie found out that their message often get altered,
 
  They decide to use a brand-new way to send message
 
- 1. jamfly send a pigeon to charile without any message.
- 2. charile recieve the pigeon back carrying a box with an open lock, but keeping the key.
- 3. jamfly put the message in the box, closeds the locks and sends the box to charile.
+ 1. jamfly send a pigeon to charlie without any message.
+ 2. charlie recieve the pigeon back carrying a box with an open lock, but keeping the key.
+ 3. jamfly put the message in the box, closeds the locks and sends the box to charlie.
  4. chariel recieve the box opens it with the key and reads the message.
 
  In this way, big brother cannot change the message by intercepting the pigeon.
@@ -103,19 +103,19 @@ let originalMessage = encodedMessage.caesarDecode()
  In technical speech the box is known as *public key*
  the key to open it is known as the *private key*
 
- But how does charile know the box was send by jamfly?
- if jamfly sign their signature to charile, this way charile can know that the box is send from jamfly
+ But how does charlie know the box was send by jamfly?
+ if jamfly sign their signature to charlie, this way charlie can know that the box is send from jamfly
 
  But, the whole box can be replaceed in the way, so there's a famous, well known and trustworthy guy, Tim.
 
  Tim gave his signature to everyone and everybody trusts that he will only sign boxes for legitimate people.
- Tim will only sign an jamfly box if he’s sure that the one asking for the signature is charile.
+ Tim will only sign an jamfly box if he’s sure that the one asking for the signature is charlie.
 
- In this way, if big brother change the box, charile will know that box is fraud cause there's no Tim's signature.
+ In this way, if big brother change the box, charlie will know that box is fraud cause there's no Tim's signature.
 
  Tim is technical terms is commonly referred to as a *Certification Authority*
 
- jamfly and charile is happy cause they have a great to comunication, but pigeon won't like it.
+ jamfly and charlie is happy cause they have a great to comunication, but pigeon won't like it.
  only one message, it has to fly more times.
 
  So, they decide that message is still using *Caesar cipher*(symmetric cryptography)
@@ -137,15 +137,19 @@ let jamflyCaesarMessage = EncrytableMessage(message: "big brother is geek",
 
 //: You can decide if you want to encode ypur message.
 
-//: Move pigeon to deliver message to charile.
+//: Move pigeon to deliver message to charlie.
 //:
-//: Let's see what happened to the message that jamfly send to charile.
+//: Let's see what happened to the message that jamfly send to charlie.
 //:
 //: Be careful the big brother's TV, there's nothing can escape from it.
 
 //: But most importantly Let's draw a pigeion for yourself to move.
 
 
-let mainViewController = MainViewController(message: message)
+let mainViewController = MainViewController(message: jamflyCaesarMessage)
 
 PlaygroundPage.current.liveView = mainViewController.view
+
+//: Thank you for reading it. Hope you guys enjoy it.
+//:
+//: Jamfly

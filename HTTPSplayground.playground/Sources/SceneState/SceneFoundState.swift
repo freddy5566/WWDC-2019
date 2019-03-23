@@ -34,8 +34,8 @@ class SceneFoundState: SceneState {
     characterB.stateMachine.enter(CharacterStartState.self)
 
     scene.addChild(bigBrotherDialog)
-
     scene.resendButton.isHidden = false
+    SpeakManager.shared.bigBrotherFound()
   }
 
   override func willExit(to nextState: GKState) {

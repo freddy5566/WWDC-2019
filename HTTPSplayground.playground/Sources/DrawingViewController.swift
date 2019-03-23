@@ -14,6 +14,8 @@ public class DrawingViewController: DrawableViewController {
 
   // MARK: - Properties
 
+  private let message: EncrytableMessage
+
   private lazy var clearButton: UIButton = {
     let frame = CGRect(x: view.frame.maxX - 300,
                        y: 50,
@@ -60,7 +62,8 @@ public class DrawingViewController: DrawableViewController {
 
   // MARK: - Initialization
 
-  public init() {
+  public init(message: EncrytableMessage) {
+    self.message = message
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -80,7 +83,10 @@ public class DrawingViewController: DrawableViewController {
     setUpPenciles()
   }
 
-  // MARK: - Public Methods
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    SpeakManager.shared.drawPigeon()
+  }
 
   // MARK: - Private Methods
 
@@ -95,7 +101,6 @@ public class DrawingViewController: DrawableViewController {
   private func finishedPressed() {
     storeImage()
     let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
-    let message = EncrytableMessage(message: "big brother is bad.")
     let view = HttpView(frame: frame, message: message)
     PlaygroundPage.current.liveView = view
   }

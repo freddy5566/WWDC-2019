@@ -19,7 +19,7 @@ class IntroductionScene: SKScene {
   var message = EncrytableMessage(message: "")
 
   lazy var resendButton: SKLabelNode = {
-    let resendButton = SKLabelNode(text: "Hit me to see\nwhat charile will recieve")
+    let resendButton = SKLabelNode(text: "Hit me to see\nwhat charlie will recieve")
     resendButton.name = "resendButton"
     resendButton.fontColor = UIColor.green
     resendButton.fontName = "Chalkduster"
@@ -80,19 +80,19 @@ class IntroductionScene: SKScene {
     return jamfly
   }()
 
-  private lazy var charile: CharacterSprite = {
-    let charile = CharacterSprite(characterName: "charile",
+  private lazy var charlie: CharacterSprite = {
+    let charlie = CharacterSprite(characterName: "charlie",
                                   message: "",
                                   waiting: "🙋‍♀️",
                                   sending: "🙍‍♀️",
                                   recieve: "🙆‍♀️")
-    charile.name = "charile"
-    charile.physicsBody = SKPhysicsBody(rectangleOf: charile.frame.size)
-    charile.physicsBody?.categoryBitMask = PhysicsCategory.charile
-    charile.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
-    charile.physicsBody?.collisionBitMask = 0
-    charile.physicsBody?.isDynamic = true
-    return charile
+    charlie.name = "charlie"
+    charlie.physicsBody = SKPhysicsBody(rectangleOf: charlie.frame.size)
+    charlie.physicsBody?.categoryBitMask = PhysicsCategory.charlie
+    charlie.physicsBody?.contactTestBitMask = PhysicsCategory.pigeon
+    charlie.physicsBody?.collisionBitMask = 0
+    charlie.physicsBody?.isDynamic = true
+    return charlie
   }()
 
   private let bigBrother: SKLabelNode = {
@@ -108,10 +108,10 @@ class IntroductionScene: SKScene {
 
   private lazy var sceneStates: [SceneState] = {
     let states: [SceneState] = [
-      SceneStartState(characterA: jamfly, characterB: charile, scene: self),
-      SceneFoundState(characterA: jamfly, characterB: charile, scene: self),
-      SceneResendingState(characterA: jamfly, characterB: charile, scene: self),
-      SceneRecieveState(characterA: jamfly, characterB: charile, scene: self)
+      SceneStartState(characterA: jamfly, characterB: charlie, scene: self),
+      SceneFoundState(characterA: jamfly, characterB: charlie, scene: self),
+      SceneResendingState(characterA: jamfly, characterB: charlie, scene: self),
+      SceneRecieveState(characterA: jamfly, characterB: charlie, scene: self)
     ]
     return states
   }()
@@ -138,13 +138,14 @@ class IntroductionScene: SKScene {
     backgroundColor = SKColor.white
     setupWorldPhysics()
     sceneStateMachine.enter(SceneStartState.self)
+    SpeakManager.shared.dragThePigeion()
   }
 
   override func didMove(to view: SKView) {
     super.didMove(to: view)
     jamfly.position = CGPoint(x: size.width * 0.2,
                               y: 50)
-    charile.position = CGPoint(x: size.width * 0.8,
+    charlie.position = CGPoint(x: size.width * 0.8,
                                y: jamfly.position.y)
     pigeon.position = CGPoint(x: jamfly.position.x,
                               y: jamfly.position.y + 100)
@@ -156,7 +157,7 @@ class IntroductionScene: SKScene {
 
     addChild(pigeon)
     addChild(jamfly)
-    addChild(charile)
+    addChild(charlie)
     addChild(bigBrother)
     addChild(resendButton)
     addChild(nextSceneButton)
@@ -206,7 +207,7 @@ class IntroductionScene: SKScene {
   private func bigBrotherFound() {
     isFound = true
     pigeon.isHidden = true
-    pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charile
+    pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charlie
     sceneStateMachine.enter(SceneFoundState.self)
   }
 
@@ -243,7 +244,7 @@ extension IntroductionScene: SKPhysicsContactDelegate {
   }
 
   private func enterFinalSceneAnimation() {
-    charile.run(SKAction.fadeOut(withDuration: 3))
+    charlie.run(SKAction.fadeOut(withDuration: 3))
     jamfly.run(SKAction.fadeOut(withDuration: 3))
     bigBrother.run(SKAction.fadeOut(withDuration: 3))
     pigeonFlyAway()
@@ -254,9 +255,9 @@ extension IntroductionScene: SKPhysicsContactDelegate {
 
     if collision == PhysicsCategory.pigeon | PhysicsCategory.bigBrother {
       bigBrotherFound()
-    } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charile {
+    } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charlie {
       sceneStateMachine.enter(SceneRecieveState.self)
-      charile.stateMachine.enter(CharacterRecieveState.self)
+      charlie.stateMachine.enter(CharacterRecieveState.self)
       enterFinalSceneAnimation()
     }
   }

@@ -81,6 +81,8 @@ final public class MainViewController: DrawableViewController {
   private var pathLayer: CALayer?
   private var predictImage: UIImage?
   private var isPredicted = false
+  private var predictedString = ""
+  private var predictedDigitalNumber = 0
 
   // MARK: - Initialization
 
@@ -107,6 +109,11 @@ final public class MainViewController: DrawableViewController {
     view.addSubview(drawPigeonButton)
 
     setUpPathLayer()
+  }
+
+  public override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    SpeakManager.shared.writeDownYearOfWWDC()
   }
 
   // MARK: - Button Actions
@@ -158,7 +165,7 @@ final public class MainViewController: DrawableViewController {
   }
 
   private func presentDraw() {
-    let drawingVC = DrawingViewController()
+    let drawingVC = DrawingViewController(message: message)
     present(drawingVC, animated: true, completion: nil)
   }
 
@@ -246,6 +253,7 @@ final public class MainViewController: DrawableViewController {
 
   private func draw(text: [VNTextObservation], onImageWithBounds bounds: CGRect) {
     CATransaction.begin()
+
     for wordObservation in text {
       let wordBox = boundingBox(forRegionOfInterest: wordObservation.boundingBox, withinImageBounds: bounds)
       let wordLayer = shapeLayer(color: .red, frame: wordBox)
@@ -257,6 +265,9 @@ final public class MainViewController: DrawableViewController {
       guard let charBoxes = wordObservation.characterBoxes else {
         continue
       }
+
+      predictedDigitalNumber = charBoxes.count
+
       for charObservation in charBoxes {
         let charBox = boundingBox(forRegionOfInterest: charObservation.boundingBox, withinImageBounds: bounds)
         let charLayer = shapeLayer(color: .purple, frame: charBox)
@@ -292,15 +303,19 @@ final public class MainViewController: DrawableViewController {
       return
     }
 
-    DispatchQueue.global(qos: .userInitiated).async {
-      do {
-        let result = try mnist().prediction(image: pixelBuffer)
-        print("result is \(result.classLabel), accuracy is \(result.output[result.classLabel])")
-      } catch {
-        print("failed to predict \(error)")
-      }
+    do {
+      let result = try mnist().prediction(image: pixelBuffer)
+      print("result is \(result.classLabel), accuracy is \(result.output[result.classLabel] ?? 0)")
+              predictedString += result.classLabel
+              if predictedString.count == predictedDigitalNumber {
+                let string = "I guess your answer is \(predictedString)"
+                DispatchQueue.main.async {
+                  SpeakManager.shared.speak(string)
+                }
+              }
+    } catch {
+      print("failed to predict \(error)")
     }
-
   }
 
   private func boundingBox(forRegionOfInterest: CGRect, withinImageBounds bounds: CGRect) -> CGRect {
