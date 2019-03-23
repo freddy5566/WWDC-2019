@@ -19,7 +19,7 @@ struct SpeakManager {
   }
 
   func dragThePigeion() {
-    let string = "Now drag the pigeon you drawed to deliver message for you, but be careful the content of message when charlie recieve it."
+    let string = "Now drag the pigeon you draw to deliver message for you, but be careful the content of message when charlie recieve it."
     speak(string)
   }
 
