@@ -19,19 +19,19 @@ final public class MainViewController: DrawableViewController {
   var message = EncrytableMessage(message: "")
 
   private lazy var titleLabel: UILabel = {
-    let frame = CGRect(x: 60,
+    let frame = CGRect(x: 0,
                        y: 45,
                        width: view.frame.width,
                        height: 50)
     let titleLabel = UILabel(frame: frame)
     titleLabel.text = "What's the year of the WWDC"
-    titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
+    titleLabel.font = UIFont.boldSystemFont(ofSize: 22)
     titleLabel.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 10)
     return titleLabel
   }()
 
   private lazy var clearButton: UIButton = {
-    let frame = CGRect(x: view.frame.maxX - 300,
+    let frame = CGRect(x: view.frame.maxX - 450,
                        y: 50,
                        width: 100,
                        height: 50)
@@ -45,7 +45,7 @@ final public class MainViewController: DrawableViewController {
   }()
 
   private lazy var finishedButton: UIButton = {
-    let frame = CGRect(x: view.frame.maxX - 150,
+    let frame = CGRect(x: view.frame.maxX - 300,
                        y: 50,
                        width: 100,
                        height: 50)
@@ -58,6 +58,20 @@ final public class MainViewController: DrawableViewController {
     return finishedButton
   }()
 
+  private lazy var drawPigeonButton: UIButton = {
+    let drawPigeonButton = UIButton(frame: CGRect(x: view.frame.maxX - 150,
+                                            y: 50,
+                                            width: 100,
+                                            height: 50)
+    )
+    drawPigeonButton.backgroundColor = UIColor.wwdcBackgroundBlue
+    drawPigeonButton.setTitle("Pigeion", for: .normal)
+    drawPigeonButton.addTarget(self,
+                         action: #selector(drawPigeon),
+                         for: .touchUpInside)
+    return drawPigeonButton
+  }()
+
   private lazy var textDetectionRequest: VNDetectTextRectanglesRequest = {
     let textDetectRequest = VNDetectTextRectanglesRequest(completionHandler:  handleDetectedText)
     textDetectRequest.reportCharacterBoxes = true
@@ -66,6 +80,7 @@ final public class MainViewController: DrawableViewController {
 
   private var pathLayer: CALayer?
   private var predictImage: UIImage?
+  private var isPredicted = false
 
   // MARK: - Initialization
 
@@ -89,6 +104,7 @@ final public class MainViewController: DrawableViewController {
     view.addSubview(titleLabel)
     view.addSubview(clearButton)
     view.addSubview(finishedButton)
+    view.addSubview(drawPigeonButton)
 
     setUpPathLayer()
   }
@@ -97,7 +113,6 @@ final public class MainViewController: DrawableViewController {
 
   @objc
   private func clear() {
-    print("clear pressed")
     pathLayer?.removeFromSuperlayer()
     pathLayer = nil
     setUpPathLayer()
@@ -110,8 +125,13 @@ final public class MainViewController: DrawableViewController {
 
   @objc
   private func finishedPressed() {
+    isPredicted = true
     storeImage()
-    presentDraw()
+  }
+
+  @objc
+  private func drawPigeon() {
+    isPredicted ? presentDraw() : areYouSureGoToNextPageAlert()
   }
 
   // MARK: - Private Methods
@@ -200,6 +220,26 @@ final public class MainViewController: DrawableViewController {
                                     self?.clear()
       }
       alertController.addAction(okAction)
+      self?.present(alertController, animated: true, completion: nil)
+    }
+  }
+
+  private func areYouSureGoToNextPageAlert() {
+    DispatchQueue.main.async { [weak self] in
+      let alertController = UIAlertController(title: "Are You Sure?",
+                                              message: "You seems never write down your answer, or you never press Done button",
+                                              preferredStyle: .alert)
+      let okAction = UIAlertAction(title: "Ok",
+                                   style: .default) { [weak self] _ in
+                                    self?.clear()
+      }
+      let anywayImGoing = UIAlertAction(title: "Still Go",
+                                        style: .default,
+                                        handler: { [weak self] (_) in
+                                          self?.presentDraw()
+      })
+      alertController.addAction(okAction)
+      alertController.addAction(anywayImGoing)
       self?.present(alertController, animated: true, completion: nil)
     }
   }

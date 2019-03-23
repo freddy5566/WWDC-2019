@@ -37,7 +37,7 @@ public class DrawableViewController: UIViewController {
   }()
 
   private var lastPoint = CGPoint.zero
-  private var brushWidth: CGFloat = 10.0
+  private var brushWidth: CGFloat = 20.0
   private var swiped = false
   // MARK: - Life Cycle
 

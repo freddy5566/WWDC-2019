@@ -16,6 +16,22 @@ final class PigeonSprite: SKSpriteNode {
 
   lazy var pigeon: SKSpriteNode = {
     let pigeon = SKSpriteNode(imageNamed: "pigeon_right")
+
+    let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+    let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+    let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+    if let dirPath          = paths.first
+    {
+      let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("drawing_pigeion.jpg")
+      if let image    = UIImage(contentsOfFile: imageURL.path) {
+        pigeon.texture = SKTexture(image: image)
+      } else {
+        print("cannot get image from url")
+      }
+    } else {
+      print("cannot get dirPath")
+    }
+    
     pigeon.scale(to: CGSize(width: 50, height: 50))
     pigeon.physicsBody = SKPhysicsBody(rectangleOf: pigeon.size)
     pigeon.physicsBody?.categoryBitMask = PhysicsCategory.pigeon

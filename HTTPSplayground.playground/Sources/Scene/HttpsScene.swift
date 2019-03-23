@@ -115,12 +115,14 @@ class HttpsScene: SKScene {
 
   override func didMove(to view: SKView) {
     super.didMove(to: view)
+    view.backgroundColor = UIColor.wwdcBackgroundBlue
+    
     jamfly.position = CGPoint(x: size.width * 0.2,
                               y: 50)
     charile.position = CGPoint(x: size.width * 0.8,
                                y: jamfly.position.y)
     pigeon.position = CGPoint(x: jamfly.position.x,
-                              y: jamfly.position.y + 50)
+                              y: jamfly.position.y + 100)
     tim.position = CGPoint(x: size.width / 2,
                            y: size.height / 2)
 
@@ -148,8 +150,6 @@ class HttpsScene: SKScene {
     if let touch = touches.first, let node = pigeonNode {
       let touchLocation = touch.location(in: self)
 
-      pigeonChaneImage(touchLocation)
-
       node.position = touchLocation
     }
   }
@@ -168,14 +168,6 @@ class HttpsScene: SKScene {
   private func removeSelf(notification: NSNotification) {
     removeFromParent()
     view?.presentScene(nil)
-  }
-
-  private func pigeonChaneImage(_ touchLocation: CGPoint) {
-    if touchLocation.x < pigeon.position.x {
-      pigeon.pigeon.texture = SKTexture(imageNamed: "pigeon_left")
-    } else if touchLocation.x > pigeon.position.x {
-      pigeon.pigeon.texture = SKTexture(imageNamed: "pigeon_right")
-    }
   }
 
   private func endingAnimation() {

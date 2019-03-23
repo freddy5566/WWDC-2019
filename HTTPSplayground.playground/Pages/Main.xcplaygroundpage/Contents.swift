@@ -3,9 +3,7 @@
 //
 
 import PlaygroundSupport
-import SpriteKit
-import NaturalLanguage
-import CoreML
+
 
 /*:
  # The Story of HTTPS
@@ -23,12 +21,11 @@ import CoreML
  # Chapter One -- Naive Communication
 
  If jamfly wanna say something to charile, he attaches the message on the carrier pigeon's leg and send it to charile.
+
  charile can recieve it, everything seems to be great.
 
  */
 
-
-//: It seems to be weird, charile recieve the wrong message.
 
 //: # Big brother is watching it.
 //:
@@ -146,7 +143,7 @@ let jamflyCaesarMessage = EncrytableMessage(message: "big brother is geek",
 //:
 //: Be careful the big brother's TV, there's nothing can escape from it.
 
-//: But most importantly Let's draw a pigeion for yourself.
+//: But most importantly Let's draw a pigeion for yourself to move.
 
 
 let mainViewController = MainViewController(message: message)

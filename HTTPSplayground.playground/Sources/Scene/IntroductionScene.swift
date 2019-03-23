@@ -10,6 +10,7 @@ import Foundation
 import SpriteKit
 import GameplayKit
 import UIKit
+import PlaygroundSupport
 
 class IntroductionScene: SKScene {
 
@@ -18,16 +19,28 @@ class IntroductionScene: SKScene {
   var message = EncrytableMessage(message: "")
 
   lazy var resendButton: SKLabelNode = {
-    let resendButton = SKLabelNode(text: "hit me to see\nwhat charile will recieve")
+    let resendButton = SKLabelNode(text: "Hit me to see\nwhat charile will recieve")
     resendButton.name = "resendButton"
     resendButton.fontColor = UIColor.green
     resendButton.fontName = "Chalkduster"
     resendButton.numberOfLines = 0
     resendButton.fontSize = 18
+    resendButton.isHidden = true
     return resendButton
   }()
 
   private var pigeonCurrentNode: SKNode?
+
+  private lazy var nextSceneButton: SKLabelNode = {
+    let nextSceneButton = SKLabelNode(text: "Hit me to see next")
+    nextSceneButton.name = "nextSceneButton"
+    nextSceneButton.fontColor = UIColor.green
+    nextSceneButton.fontName = "Chalkduster"
+    nextSceneButton.numberOfLines = 0
+    nextSceneButton.fontSize = 36
+    nextSceneButton.alpha = 0
+    return nextSceneButton
+  }()
 
   private lazy var pigeon: SKSpriteNode = {
     let pigeon = SKSpriteNode(imageNamed: "pigeon_right")
@@ -107,6 +120,8 @@ class IntroductionScene: SKScene {
     return GKStateMachine(states: sceneStates)
   }()
 
+  private var isFound = false
+
   // MARK: - Initialization
 
   init(size: CGSize, message: EncrytableMessage) {
@@ -132,37 +147,39 @@ class IntroductionScene: SKScene {
     charile.position = CGPoint(x: size.width * 0.8,
                                y: jamfly.position.y)
     pigeon.position = CGPoint(x: jamfly.position.x,
-                              y: jamfly.position.y + 50)
+                              y: jamfly.position.y + 100)
     bigBrother.position = CGPoint(x: frame.midX,
                                   y: frame.height - 50)
     resendButton.position = CGPoint(x: size.width * 0.75,
                                     y: 550.0)
+    nextSceneButton.position = CGPoint(x: frame.midX, y: frame.midY)
 
     addChild(pigeon)
     addChild(jamfly)
     addChild(charile)
     addChild(bigBrother)
     addChild(resendButton)
-    resendButton.isHidden = true
+    addChild(nextSceneButton)
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     super.touchesBegan(touches, with: event)
     if let touch = touches.first {
       let location = touch.location(in: self)
-      print("location is \(location)")
+
       let touchedNodes = self.nodes(at: location)
       for node in touchedNodes.reversed() {
         if node.name == "pigeon" {
           pigeonCurrentNode = node
+        } else if node.name == "resendButton" {
+          sceneStateMachine.enter(SceneResendingState.self)
+          pigeon.isHidden = false
+        } else if node.name == "nextSceneButton" {
+          let frame = CGRect(x: 0, y: 0, width: 750, height: 650)
+          let message = EncrytableMessage(message: "HELLO WWDC", encrytableProtocol: .caesar(key: 8))
+          PlaygroundPage.current.liveView = HttpsView(frame: frame, message: message)
         }
-
-        if node.name == "resendButton" {
-          bigBrotherFly()
-        }
-
       }
-
     }
   }
 
@@ -170,7 +187,7 @@ class IntroductionScene: SKScene {
     if let touch = touches.first, let node = pigeonCurrentNode {
       let touchLocation = touch.location(in: self)
       node.position = touchLocation
-      if Int(node.position.x) == Int(bigBrother.position.x) {
+      if !isFound && node.position.x >= bigBrother.position.x {
         bigBrotherFound()
       }
     }
@@ -184,23 +201,11 @@ class IntroductionScene: SKScene {
     pigeonCurrentNode = nil
   }
 
-  // MARK: - Public Methods
-
-  func bigBrotherDismiss() {
-    bigBrother.removeAllActions()
-    bigBrother.removeFromParent()
-  }
-
   // MARK: - Private Methods
 
-  private func bigBrotherFly() {
-    sceneStateMachine.enter(SceneResendingState.self)
-    pigeon.isPaused = false
-  }
-
   private func bigBrotherFound() {
-    pigeon.removeAllActions()
-    pigeon.isPaused = true
+    isFound = true
+    pigeon.isHidden = true
     pigeon.physicsBody?.contactTestBitMask = PhysicsCategory.charile
     sceneStateMachine.enter(SceneFoundState.self)
   }
@@ -223,13 +228,36 @@ extension IntroductionScene: SKPhysicsContactDelegate {
     self.physicsBody = worldPhysicsBody(frame: self.frame)
   }
 
+  private func pigeonFlyAway() {
+    pigeon.run(SKAction.move(to: CGPoint(x: frame.midX,
+                                         y: frame.midY),
+                             duration: 3)) { [weak self] in
+                              self?.pigeonDisiss()
+    }
+  }
+
+  private func pigeonDisiss() {
+    pigeon.run(SKAction.fadeOut(withDuration: 2)) { [weak self] in
+      self?.nextSceneButton.run(SKAction.fadeIn(withDuration: 2))
+    }
+  }
+
+  private func enterFinalSceneAnimation() {
+    charile.run(SKAction.fadeOut(withDuration: 3))
+    jamfly.run(SKAction.fadeOut(withDuration: 3))
+    bigBrother.run(SKAction.fadeOut(withDuration: 3))
+    pigeonFlyAway()
+  }
+
   func didBegin(_ contact: SKPhysicsContact) {
     let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
 
     if collision == PhysicsCategory.pigeon | PhysicsCategory.bigBrother {
       bigBrotherFound()
     } else if collision == PhysicsCategory.pigeon | PhysicsCategory.charile {
-      pigeon.isPaused = true
+      sceneStateMachine.enter(SceneRecieveState.self)
+      charile.stateMachine.enter(CharacterRecieveState.self)
+      enterFinalSceneAnimation()
     }
   }
 
