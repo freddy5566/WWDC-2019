@@ -121,7 +121,7 @@ public class DrawingViewController: DrawableViewController {
     if let data = mainImageView.image!.jpegData(compressionQuality:  1.0) {
       do {
         try data.write(to: fileURL)
-        print("draeing pegeion saved")
+        print("drawing pegeion saved")
       } catch {
         print("error saving file:", error)
       }
